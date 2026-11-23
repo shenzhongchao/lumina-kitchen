@@ -1,7 +1,6 @@
 {
   "name": "@local/lumina-kitchen",
-  "version": "3.2.1",
-  "private": true,
+  "version": "3.2.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/shenzhongchao/lumina-kitchen.git"
@@ -44,7 +43,8 @@
     "test": "node --test tests/*.test.mjs"
   },
   "engines": {
-    "node": ">=20.3.0"
+    "node": ">=20.3.0",
+    "dsh": "0.2.2-rc.3"
   },
   "license": "MIT"
 }

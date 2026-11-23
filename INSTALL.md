@@ -14,7 +14,7 @@
 
 本仓库的资源快照与客户端可直接用于安装；`npm pack` 自动重建客户端并核对资源哈希，不需要父仓库。想更新知识数据时运行 `node scripts/bundle-data.mjs <包含data及assets的web目录>`。更新前检查来源与分发权限，更新后提交快照及 manifest，运行测试。
 
-`private: true` 保留以阻止意外发布 npm；它不阻止从 GitHub Release 安装。本仓库不添加 dsh-plugin Topic，不提交市场收录。
+本插件通过固定 Git 提交申请市场收录，暂不发布 npm。
 
 ## 动态素材发布
 
