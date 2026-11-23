@@ -1,0 +1,5 @@
+# Bundle patch: the row loads the package main entry as the Host half;
+# `dsh.client` makes the Web app load ./dist/client.js as the browser half.
+- insert:
+    - id: lumina-kitchen
+      name: '@local/lumina-kitchen'

@@ -1,0 +1,587 @@
+{
+  "format": 1,
+  "entries": [
+    {
+      "id": "6-1-arc-shot",
+      "file": "6-1-arc-shot.gif",
+      "bytes": 2945508,
+      "sha256": "dc61a3dec2f00ce9500377c104dabc83289499c3320402a58d56ec2c4c63961c"
+    },
+    {
+      "id": "6-1-camera-roll",
+      "file": "6-1-camera-roll.gif",
+      "bytes": 3481385,
+      "sha256": "905714f8b1da82f9e012bf234760ff4444fcc460c745db177e737ab3da200fd1"
+    },
+    {
+      "id": "6-1-crane-shot",
+      "file": "6-1-crane-shot.gif",
+      "bytes": 2942171,
+      "sha256": "721053c28a7f88d6c5569e895d808cb618b628649d4d999b2720c7e1a37c8fe3"
+    },
+    {
+      "id": "6-1-dolly-in",
+      "file": "6-1-dolly-in.gif",
+      "bytes": 3436756,
+      "sha256": "ccfe295cfc2736e3066dffead79792b37085f1a9f9d330c4ac4cb4fe792fdafa"
+    },
+    {
+      "id": "6-1-dolly-out",
+      "file": "6-1-dolly-out.gif",
+      "bytes": 2270531,
+      "sha256": "a26c74acda0dbf6f429d2bae0534f6815bd75a43b74349aa48fcf22c782412bb"
+    },
+    {
+      "id": "6-1-pan-shot",
+      "file": "6-1-pan-shot.gif",
+      "bytes": 2322046,
+      "sha256": "c36d1f13b12cea5cadc6ce2e2071e79981c19c4a044294312e57232bcda35847"
+    },
+    {
+      "id": "6-1-pedestal-down",
+      "file": "6-1-pedestal-down.gif",
+      "bytes": 3477501,
+      "sha256": "637888e7e06108320c958ea0dd0bd8448ee056dff2132682ea48a4586d91c130"
+    },
+    {
+      "id": "6-1-pedestal-up",
+      "file": "6-1-pedestal-up.gif",
+      "bytes": 3304490,
+      "sha256": "5c7e4ade076315d5e6be47a8532861f81acd8a21e74030a59144cc1a2ca259cb"
+    },
+    {
+      "id": "6-1-tilt-shot",
+      "file": "6-1-tilt-shot.gif",
+      "bytes": 3349295,
+      "sha256": "e69c68701282d692a3fba6302b42471c7ce62d65dae94aade022abb20573e217"
+    },
+    {
+      "id": "6-1-truck-shot",
+      "file": "6-1-truck-shot.gif",
+      "bytes": 2952217,
+      "sha256": "9e994c083374865fac62fef231395d5e283dd1217f6da00f483dc647ab357c36"
+    },
+    {
+      "id": "6-1-zoom-in",
+      "file": "6-1-zoom-in.gif",
+      "bytes": 3859744,
+      "sha256": "1fcfd1358f3a21ad27ba01c7ea73616c7c6bad81a498e1bd56e00c0cf91f9bd4"
+    },
+    {
+      "id": "6-1-zoom-out",
+      "file": "6-1-zoom-out.gif",
+      "bytes": 2630385,
+      "sha256": "bdbc0b3da011607a9ec7abd8528dcb4a6ec507faee3d6f4f9c285f4216628499"
+    },
+    {
+      "id": "6-2-arc-shot",
+      "file": "6-2-arc-shot.gif",
+      "bytes": 2970896,
+      "sha256": "2d5dda57c67edd4793ab577676390c24505b095986b31f826caaaa5cceb7bc13"
+    },
+    {
+      "id": "6-2-bullet-time",
+      "file": "6-2-bullet-time.gif",
+      "bytes": 3353434,
+      "sha256": "30150ed8d8c112bbea0bdfa4ba78f22975946515262aef51e945580be70b80ae"
+    },
+    {
+      "id": "6-2-crane-shot",
+      "file": "6-2-crane-shot.gif",
+      "bytes": 4515931,
+      "sha256": "beb045d639476c9abdbd2286cf19fb79e7603bf57b040073b962305d6e7560ed"
+    },
+    {
+      "id": "6-2-dolly-zoom",
+      "file": "6-2-dolly-zoom.gif",
+      "bytes": 3504645,
+      "sha256": "0edc7300651f384cc68dfa55de6e7ef0ea46916500d52291c776a263adb8d17e"
+    },
+    {
+      "id": "6-2-ken-burns-effect",
+      "file": "6-2-ken-burns-effect.gif",
+      "bytes": 4479313,
+      "sha256": "31b4b6286dcf238583c499683637c57f6d3dcf3428eda07449378960b16fe41d"
+    },
+    {
+      "id": "6-2-motion-parallax",
+      "file": "6-2-motion-parallax.gif",
+      "bytes": 3250930,
+      "sha256": "1a907ff32e5d55bfdf08d5fe4ec17b18370f89022f030d6efe4763b2f1e7147d"
+    },
+    {
+      "id": "6-2-orbit-shot",
+      "file": "6-2-orbit-shot.gif",
+      "bytes": 4021502,
+      "sha256": "82d94b60c2fb786c7dd7e34ea86fc3375a84a7ec933abd4fac88dd30ae0a85e5"
+    },
+    {
+      "id": "6-2-reveal-shot",
+      "file": "6-2-reveal-shot.gif",
+      "bytes": 3265262,
+      "sha256": "721c7065bb77930e28626945bf397322da6bc3fd84151c9e77a37afe3c21d158"
+    },
+    {
+      "id": "6-2-snorricam-shot",
+      "file": "6-2-snorricam-shot.gif",
+      "bytes": 3997044,
+      "sha256": "84ae55ab6f0b047900a695521af6245bcb6a85d90bc79e8eb65f500f23aea07d"
+    },
+    {
+      "id": "6-2-steadicam-shot",
+      "file": "6-2-steadicam-shot.gif",
+      "bytes": 3617270,
+      "sha256": "ffc0cdb1a8ea9b0cec0a4f2abceb453ed0864380cd2cfcdeddb9f226ce39cea6"
+    },
+    {
+      "id": "6-2-tracking-shot",
+      "file": "6-2-tracking-shot.gif",
+      "bytes": 3260771,
+      "sha256": "b741647bb56b710e3821fe114505fa0420565a8973f5dd27fb8d1a9d2e795f09"
+    },
+    {
+      "id": "6-2-vertex-shot",
+      "file": "6-2-vertex-shot.gif",
+      "bytes": 3656554,
+      "sha256": "9804587993c792869abf737cf5663029de5da6dbda249af3797e7be8f69bcf42"
+    },
+    {
+      "id": "6-3-bullet-time",
+      "file": "6-3-bullet-time.gif",
+      "bytes": 3559246,
+      "sha256": "dadbcecce3a5063f282e4765992eb41ef8c180a0fb010bf668c5fb18e2963d01"
+    },
+    {
+      "id": "6-3-chronophotography",
+      "file": "6-3-chronophotography.gif",
+      "bytes": 3152257,
+      "sha256": "83a15c87f23d1030b2d8b394c4fd5eec834b49db89df985f651391e226385686"
+    },
+    {
+      "id": "6-3-datamoshing-aesthetic",
+      "file": "6-3-datamoshing-aesthetic.gif",
+      "bytes": 3875013,
+      "sha256": "6e9875f99f8c2f854e6e59a9a3efc4a616dce09e8a1920993a7eb78fa2dc5b35"
+    },
+    {
+      "id": "6-3-fast-motion",
+      "file": "6-3-fast-motion.gif",
+      "bytes": 2798465,
+      "sha256": "bb21c7e7e08ca162017097ef17078012fb6a006f56f63b951b31ab87b9ca351e"
+    },
+    {
+      "id": "6-3-freeze-frame",
+      "file": "6-3-freeze-frame.gif",
+      "bytes": 2511244,
+      "sha256": "c929a7c587b0bcd2d929a52b0583e171d6257cdb2b43bb48ef81992928f5167c"
+    },
+    {
+      "id": "6-3-hyperlapse",
+      "file": "6-3-hyperlapse.gif",
+      "bytes": 4009773,
+      "sha256": "fcac5035ca5c44801e010d28051f30e3660a9c2ea89f8551df30a4444e15f595"
+    },
+    {
+      "id": "6-3-long-exposure",
+      "file": "6-3-long-exposure.gif",
+      "bytes": 2464845,
+      "sha256": "4e49d7de537c9cec27a10fdee289795b7c893fe8fcace468f4ed05f886b03694"
+    },
+    {
+      "id": "6-3-motion-blur",
+      "file": "6-3-motion-blur.gif",
+      "bytes": 4092545,
+      "sha256": "3c33e4a1e15241cb795df7b7f4bdb1b0cd5b63b68968506827b2cc149e3b0bd1"
+    },
+    {
+      "id": "6-3-motion-trails",
+      "file": "6-3-motion-trails.gif",
+      "bytes": 4094931,
+      "sha256": "c5c37c40c8739897e9bcd3cafec63eab412710ebc962f14d6b01117aa26bf9eb"
+    },
+    {
+      "id": "6-3-reverse-motion",
+      "file": "6-3-reverse-motion.gif",
+      "bytes": 2828900,
+      "sha256": "f6bdf9162ea0f8f34dba5fa541c19011dd70a9019278166e672a1db445c7618a"
+    },
+    {
+      "id": "6-3-slit-scan-effect",
+      "file": "6-3-slit-scan-effect.gif",
+      "bytes": 2866956,
+      "sha256": "dd9408ab2a2f3106bcb1c4129496b23f7ec8e845eead8f35d731103af0e2dfb9"
+    },
+    {
+      "id": "6-3-slow-motion",
+      "file": "6-3-slow-motion.gif",
+      "bytes": 2499494,
+      "sha256": "eecb97f4d483d6a57b6db305a0fbdc6bd1e3f5aa6dc4f2010d97a4e7b6485174"
+    },
+    {
+      "id": "6-3-speed-ramp",
+      "file": "6-3-speed-ramp.gif",
+      "bytes": 2564581,
+      "sha256": "278d28e6a86ec0cb4d1976b958cb6968b5a649d847c2dd694469899b888e4955"
+    },
+    {
+      "id": "6-3-step-printing",
+      "file": "6-3-step-printing.gif",
+      "bytes": 5657117,
+      "sha256": "68e8f5e12a4fbff91e5e891948b3288abb1b13b3fbd6423b9f13114874ca5309"
+    },
+    {
+      "id": "6-3-stop-motion-timing",
+      "file": "6-3-stop-motion-timing.gif",
+      "bytes": 2781777,
+      "sha256": "ccbef7b5f73861ab05bed218eddae4e35cd904fb841399bb7640f09dee42b60e"
+    },
+    {
+      "id": "6-3-timelapse",
+      "file": "6-3-timelapse.gif",
+      "bytes": 2536674,
+      "sha256": "851d48607433ed70290eab3c581779e52f9a0a9b2e22ba0cc0a20dc1167d899d"
+    },
+    {
+      "id": "6-4-cross-cutting",
+      "file": "6-4-cross-cutting.gif",
+      "bytes": 2649356,
+      "sha256": "70fc9e0983d0d5eae088066acd8278fd04f59aa927959d3fdf5f286970105915"
+    },
+    {
+      "id": "6-4-cross-dissolve",
+      "file": "6-4-cross-dissolve.gif",
+      "bytes": 2329979,
+      "sha256": "7dee7afbebb5afe2e2238cfe819673600d8585712eb01c3ae4884712ab502452"
+    },
+    {
+      "id": "6-4-defocus-transition",
+      "file": "6-4-defocus-transition.gif",
+      "bytes": 4269480,
+      "sha256": "0591ef721c402527bc784c435e1133840874a8759a2d6ee8d9e34c147a3b20b1"
+    },
+    {
+      "id": "6-4-fade-to-black",
+      "file": "6-4-fade-to-black.gif",
+      "bytes": 2367710,
+      "sha256": "e6c7fa07f58619651e15af1a5f7b2e9072289a00ae0ac39ce92af4ab645976db"
+    },
+    {
+      "id": "6-4-fade-to-white",
+      "file": "6-4-fade-to-white.gif",
+      "bytes": 2226817,
+      "sha256": "386aba27cfeef72cd3602a6598084d4a7b7fed71677cae34fc9cc3e08150c60b"
+    },
+    {
+      "id": "6-4-glitch-transition",
+      "file": "6-4-glitch-transition.gif",
+      "bytes": 3595891,
+      "sha256": "ceaa8f310d9f7a5ca92e78e822adad0598eced306e859826beac0fbb77f82f39"
+    },
+    {
+      "id": "6-4-hard-cut",
+      "file": "6-4-hard-cut.gif",
+      "bytes": 2319373,
+      "sha256": "a8e112aa062d295ab37fd00bb193c50e1435e4fcb01196429bcce8cbe840097f"
+    },
+    {
+      "id": "6-4-iris-transition",
+      "file": "6-4-iris-transition.gif",
+      "bytes": 2308032,
+      "sha256": "c0a39d142400956e9f167623674d455827762f4174c8ba26138d2b6b27fdc918"
+    },
+    {
+      "id": "6-4-j-cut",
+      "file": "6-4-j-cut.gif",
+      "bytes": 2915541,
+      "sha256": "abb91d42417ccd8e309a2c8df32bef1971e0006b0f2a237a6042e7c6d50b50d2"
+    },
+    {
+      "id": "6-4-jump-cut",
+      "file": "6-4-jump-cut.gif",
+      "bytes": 2251622,
+      "sha256": "0b122b53fd89eb90e486d2af9707c1af352063aa78ceb3f2c3405c37dd951aa0"
+    },
+    {
+      "id": "6-4-l-cut",
+      "file": "6-4-l-cut.gif",
+      "bytes": 2649132,
+      "sha256": "860e4c4cba8f517dd5bb49f2fcb2efcd0be999ec2388be56988c4c9ccf7ea417"
+    },
+    {
+      "id": "6-4-light-leak-transition",
+      "file": "6-4-light-leak-transition.gif",
+      "bytes": 2519535,
+      "sha256": "d817f2b05181251b1b33dd40f1a1c2fe046cac5012e839caabcc1a67ef3a0010"
+    },
+    {
+      "id": "6-4-masking-transition",
+      "file": "6-4-masking-transition.gif",
+      "bytes": 3015055,
+      "sha256": "8010fe32b245918cf1f533f3c3cbc0d015382f7c41e0ff998ccd0edb2131d881"
+    },
+    {
+      "id": "6-4-match-cut",
+      "file": "6-4-match-cut.gif",
+      "bytes": 2386674,
+      "sha256": "e412d24c39eaf0a99afa9eed5265883095d0667569ef1b396afefbc317d88091"
+    },
+    {
+      "id": "6-4-morph-cut",
+      "file": "6-4-morph-cut.gif",
+      "bytes": 2624612,
+      "sha256": "dd0e56d5b79dee337b8bc28c7eb03bf6c059bb5b957b41160ffe6057a71ff148"
+    },
+    {
+      "id": "6-4-perspective-match-move",
+      "file": "6-4-perspective-match-move.gif",
+      "bytes": 3468818,
+      "sha256": "5a99c46d031af231fed249124a49ba0a28faede68998577f083e3f301b473e36"
+    },
+    {
+      "id": "6-4-speed-ramp-transition",
+      "file": "6-4-speed-ramp-transition.gif",
+      "bytes": 2526374,
+      "sha256": "595db73df87bf9af7b8708f90483b39ecee575f78e2996bf8577c522a1c6d03b"
+    },
+    {
+      "id": "6-4-texture-morph-transition",
+      "file": "6-4-texture-morph-transition.gif",
+      "bytes": 2665199,
+      "sha256": "1165cd11eacfe2bb8c7c2e4994920405d6231e458d8e53560affe23fd02f9950"
+    },
+    {
+      "id": "6-4-whip-pan",
+      "file": "6-4-whip-pan.gif",
+      "bytes": 3023132,
+      "sha256": "1eb1ab381a1d415793b84e26bc89a37ac0a970b38300f68b4f3dd13275a7f87d"
+    },
+    {
+      "id": "6-4-wipe-transition",
+      "file": "6-4-wipe-transition.gif",
+      "bytes": 2510601,
+      "sha256": "c664a98c445fa85bbfb57d32cb9966908cf59f6db13fad0469eeb11222bb67a2"
+    },
+    {
+      "id": "6-4-zoom-cut",
+      "file": "6-4-zoom-cut.gif",
+      "bytes": 2931111,
+      "sha256": "c070e6177380701876ed60f15da73f27df77e1a4d04c3fa5c4cfdc694cf05f7d"
+    },
+    {
+      "id": "6-5-anticipation",
+      "file": "6-5-anticipation.gif",
+      "bytes": 2700268,
+      "sha256": "679d53e1d0c3f547f1897e60919c9f7af513554854c1d887018f370f138482fc"
+    },
+    {
+      "id": "6-5-atmospheric-turbulence",
+      "file": "6-5-atmospheric-turbulence.gif",
+      "bytes": 3415293,
+      "sha256": "f9da7aeae6a8240ef28da6fff51ca11f09317ca54dd14b4b16997089d15fed8a"
+    },
+    {
+      "id": "6-5-biological-metamorphosis",
+      "file": "6-5-biological-metamorphosis.gif",
+      "bytes": 2682430,
+      "sha256": "15fee555e3e9a4ca0259e91a1df5467b494fe89991f1e247cc84483c255c39cd"
+    },
+    {
+      "id": "6-5-crystalline-growth",
+      "file": "6-5-crystalline-growth.gif",
+      "bytes": 2693325,
+      "sha256": "f3d5cb7ed024a6cfecc38891314969e4754611fa29511a4c1b51613b58ee4c9d"
+    },
+    {
+      "id": "6-5-day-to-night-transition",
+      "file": "6-5-day-to-night-transition.gif",
+      "bytes": 3353217,
+      "sha256": "f5f699143ac6afcf168129ce1b1c73b22aaceebdc7651b6b970d00e60bb1f3cd"
+    },
+    {
+      "id": "6-5-ease-in-out",
+      "file": "6-5-ease-in-out.gif",
+      "bytes": 2671476,
+      "sha256": "bd1e322618ec8f24bd6c977cd485f4654518137c14f670ff4de47a986959338a"
+    },
+    {
+      "id": "6-5-elastic-deformity",
+      "file": "6-5-elastic-deformity.gif",
+      "bytes": 2741000,
+      "sha256": "f31142447b087d460e21805d025da20ec4d768701cc30a06d827f662df91fa3a"
+    },
+    {
+      "id": "6-5-ethereal-dissipation",
+      "file": "6-5-ethereal-dissipation.gif",
+      "bytes": 3262069,
+      "sha256": "56baacef8074b271004d7877ca6df41b297b6aa969b1f6ea3d90fe6462a3ea32"
+    },
+    {
+      "id": "6-5-follow-through",
+      "file": "6-5-follow-through.gif",
+      "bytes": 2740667,
+      "sha256": "fc60b291675dd5c8dfed0983c2968bd2fc37ebe8f208d2a5b25db26de6abae41"
+    },
+    {
+      "id": "6-5-gravitational-levitation",
+      "file": "6-5-gravitational-levitation.gif",
+      "bytes": 2941942,
+      "sha256": "477b90a9d2d20f7111e2f1ec7de048d29cfc44ee256a696a854c6c2a6cd61640"
+    },
+    {
+      "id": "6-5-impact-collision",
+      "file": "6-5-impact-collision.gif",
+      "bytes": 2706427,
+      "sha256": "19392f82b8081324a3ee874a35bf2c9c708d3a164109944ab64abaffcea97f18"
+    },
+    {
+      "id": "6-5-overshoot-and-settle",
+      "file": "6-5-overshoot-and-settle.gif",
+      "bytes": 2541753,
+      "sha256": "c08661a2e0185bc19b224d8b417eff6059737deaf73f5015e268640fabc53f74"
+    },
+    {
+      "id": "6-5-phase-sublimation",
+      "file": "6-5-phase-sublimation.gif",
+      "bytes": 3025116,
+      "sha256": "2669384633914198089f53a62fa434a7bb2ade03aaeca25c5b3050f315fa9f4b"
+    },
+    {
+      "id": "6-5-pose-hold",
+      "file": "6-5-pose-hold.gif",
+      "bytes": 3200572,
+      "sha256": "cd1eb541f2e08ef5bf5b956b0f5e6a894d63de27e06e23e2c97f2ced5c242b52"
+    },
+    {
+      "id": "6-5-pyrotechnic-combustion",
+      "file": "6-5-pyrotechnic-combustion.gif",
+      "bytes": 3166252,
+      "sha256": "9bd7027100f83a6051a4b390ae61831031060e0bcbbb214869497d5a1601b84c"
+    },
+    {
+      "id": "6-5-staggered-action",
+      "file": "6-5-staggered-action.gif",
+      "bytes": 2749919,
+      "sha256": "201218acccd4ed9387842047ab797e7a1492bb74abcf100c0f3da5a4dd321786"
+    },
+    {
+      "id": "6-5-structural-fragmentation",
+      "file": "6-5-structural-fragmentation.gif",
+      "bytes": 2871042,
+      "sha256": "91f8603c48395187a32c0a136f342d51913e7138674f54e23be0ad94050c1bca"
+    },
+    {
+      "id": "6-5-subject-entrance",
+      "file": "6-5-subject-entrance.gif",
+      "bytes": 2754320,
+      "sha256": "1a7b0de494c9d3347012707daae5275474e7739ef24d04973f0e490c7ee38f81"
+    },
+    {
+      "id": "6-5-subject-exit",
+      "file": "6-5-subject-exit.gif",
+      "bytes": 2557526,
+      "sha256": "b2ccad5b1602fbf0d437d98473cf2b1f6931d2a5520c3132b0ca9181eaaebbfc"
+    },
+    {
+      "id": "6-5-sudden-impact-recoil",
+      "file": "6-5-sudden-impact-recoil.gif",
+      "bytes": 2598215,
+      "sha256": "7a2f8be33578fd16369cb1005578172c4a6be83893360c9132fbbd4bb7e27a23"
+    },
+    {
+      "id": "6-5-thermal-liquefaction",
+      "file": "6-5-thermal-liquefaction.gif",
+      "bytes": 2917023,
+      "sha256": "8fb8e36e6e32c76d8cfc1be9af0e0034c2afb16d5c5378988b84e095d2e13160"
+    },
+    {
+      "id": "6-5-viscous-flow",
+      "file": "6-5-viscous-flow.gif",
+      "bytes": 2558938,
+      "sha256": "d0b911f322bc7d602d66cbaa25ecc981b5d812c2d1287df51d98f8623eb6b017"
+    },
+    {
+      "id": "6-6-aerial-airstream-turbulence",
+      "file": "6-6-aerial-airstream-turbulence.gif",
+      "bytes": 3077987,
+      "sha256": "8fde2640b50c6aa1c6aacb9770bd9c8fb7b07d15b339d097302e1dc622862012"
+    },
+    {
+      "id": "6-6-body-mounted-tracking",
+      "file": "6-6-body-mounted-tracking.gif",
+      "bytes": 4112240,
+      "sha256": "6b8a548ce2651fe530a540f0ef10817e50a23b6236a5069e932ffd87b7adf8d7"
+    },
+    {
+      "id": "6-6-damped-fluid-motion",
+      "file": "6-6-damped-fluid-motion.gif",
+      "bytes": 2834971,
+      "sha256": "74dc3dca29a355b04839fabc3cc763280a257a42f46eda69492f99a9e1b48337"
+    },
+    {
+      "id": "6-6-electronic-image-stabilization-look",
+      "file": "6-6-electronic-image-stabilization-look.gif",
+      "bytes": 4613479,
+      "sha256": "79d30b583e955a517ebaa8d2793d98dd388b82f598e1eb9f85313c6a08c1d710"
+    },
+    {
+      "id": "6-6-gimbal-stabilized-shot",
+      "file": "6-6-gimbal-stabilized-shot.gif",
+      "bytes": 3655934,
+      "sha256": "57d9f37483c3d5c192f119c74f6fdbb9d795de2855f1ecfd48ea796cbf306241"
+    },
+    {
+      "id": "6-6-handheld-camera",
+      "file": "6-6-handheld-camera.gif",
+      "bytes": 3625388,
+      "sha256": "e7324ab500cc9abcafec4c2f2141543c7d8ba5b3bc07482d1a0bd7c63aa515ea"
+    },
+    {
+      "id": "6-6-high-frequency-jitter",
+      "file": "6-6-high-frequency-jitter.gif",
+      "bytes": 4414274,
+      "sha256": "5eaf6a2aeb7e7627d480476093121cc3a1e04aba7b4c0c3c991970ac12e8a5d5"
+    },
+    {
+      "id": "6-6-jittery-shaky-cam",
+      "file": "6-6-jittery-shaky-cam.gif",
+      "bytes": 4299443,
+      "sha256": "0031acebfbb0d1774faed0a4df5d358f920fd1b7bf2f4ad0744cedfcc7095504"
+    },
+    {
+      "id": "6-6-mechanical-inertia-dampening",
+      "file": "6-6-mechanical-inertia-dampening.gif",
+      "bytes": 4029665,
+      "sha256": "d77ff1d4ea44c866010eb6e04f06bf5fb13accfb7a9abefbb56744876a75082d"
+    },
+    {
+      "id": "6-6-oceanic-low-frequency-sway",
+      "file": "6-6-oceanic-low-frequency-sway.gif",
+      "bytes": 4241761,
+      "sha256": "c55f81f01a7cd831dafb98d2c21adb2a176a153ac2f21a206e27b39088a6210a"
+    },
+    {
+      "id": "6-6-organic-handheld-breathing",
+      "file": "6-6-organic-handheld-breathing.gif",
+      "bytes": 4199137,
+      "sha256": "8f403d0d27a6011d8a63f5dcb5d7bb5ac2937e3f7e3728d5c77baccb8058d90c"
+    },
+    {
+      "id": "6-6-static-tripod-shot",
+      "file": "6-6-static-tripod-shot.gif",
+      "bytes": 2877248,
+      "sha256": "dddf7ae523d8268c2304c7f32fa6c3648e4ac47fb20b0d80d1a06fa593919155"
+    },
+    {
+      "id": "6-6-steadicam-stabilization",
+      "file": "6-6-steadicam-stabilization.gif",
+      "bytes": 3650721,
+      "sha256": "1caed97af78a1fab4b42d855c01c8233676ccaf8ce56260d8a1fd173c3591185"
+    },
+    {
+      "id": "6-6-vehicle-hard-mount-vibration",
+      "file": "6-6-vehicle-hard-mount-vibration.gif",
+      "bytes": 4592596,
+      "sha256": "b6627df38c661daee8387e3c61eb1d18ecebe7cd4bfe00d0d453056428196095"
+    }
+  ]
+}

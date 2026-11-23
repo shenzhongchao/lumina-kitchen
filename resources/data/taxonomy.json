@@ -1,0 +1,273 @@
+{
+  "version": 1,
+  "dimensions": [
+    {
+      "id": "framing",
+      "name_en": "Framing",
+      "name_cn": "构图",
+      "definition_cn": "在矩形画框内构建视觉元素的艺术，包括主体放置、机位选择和空间关系。",
+      "description_en": "The art of composing visual elements within the rectangular frame, including subject placement, camera position, and spatial relationships.",
+      "count": 68,
+      "batches": [
+        {
+          "id": "1.1",
+          "topic_cn": "景别",
+          "topic_en": "Shot Sizes",
+          "count": 10
+        },
+        {
+          "id": "1.2",
+          "topic_cn": "角度",
+          "topic_en": "Angles",
+          "count": 15
+        },
+        {
+          "id": "1.3",
+          "topic_cn": "法则",
+          "topic_en": "Composition Rules",
+          "count": 24
+        },
+        {
+          "id": "1.4",
+          "topic_cn": "透视",
+          "topic_en": "Perspective",
+          "count": 2
+        },
+        {
+          "id": "1.5",
+          "topic_cn": "空间分层",
+          "topic_en": "Depth & Layering",
+          "count": 17
+        }
+      ]
+    },
+    {
+      "id": "lighting",
+      "name_en": "Lighting",
+      "name_cn": "光影",
+      "definition_cn": "通过操控光源、质感、方向和强度来营造氛围、揭示形态并引导观众注意力。",
+      "description_en": "The manipulation of light sources, quality, direction, and intensity to create mood, reveal form, and guide the viewer's attention.",
+      "count": 73,
+      "batches": [
+        {
+          "id": "2.1",
+          "topic_cn": "质感",
+          "topic_en": "Quality & Hardness",
+          "count": 5
+        },
+        {
+          "id": "2.2",
+          "topic_cn": "方向",
+          "topic_en": "Direction",
+          "count": 11
+        },
+        {
+          "id": "2.3",
+          "topic_cn": "布光模式",
+          "topic_en": "Portrait Patterns",
+          "count": 12
+        },
+        {
+          "id": "2.4",
+          "topic_cn": "光比",
+          "topic_en": "Contrast Ratio",
+          "count": 11
+        },
+        {
+          "id": "2.5",
+          "topic_cn": "光源逻辑",
+          "topic_en": "Source Origin",
+          "count": 12
+        },
+        {
+          "id": "2.6",
+          "topic_cn": "环境光",
+          "topic_en": "Environment & Atmosphere",
+          "count": 12
+        },
+        {
+          "id": "2.7",
+          "topic_cn": "曝光控制",
+          "topic_en": "Exposure Control",
+          "count": 10
+        }
+      ]
+    },
+    {
+      "id": "color",
+      "name_en": "Color",
+      "name_cn": "色彩",
+      "definition_cn": "运用色温、配色方案和调色板唤起情绪并建立视觉层级。",
+      "description_en": "The use of color temperature, schemes, and palettes to evoke emotions and establish visual hierarchy.",
+      "count": 46,
+      "batches": [
+        {
+          "id": "3.1",
+          "topic_cn": "色温",
+          "topic_en": "Temperature",
+          "count": 11
+        },
+        {
+          "id": "3.2",
+          "topic_cn": "色彩理论",
+          "topic_en": "Color Harmony Theory",
+          "count": 10
+        },
+        {
+          "id": "3.3",
+          "topic_cn": "情绪与饱和",
+          "topic_en": "Mood & Saturation",
+          "count": 11
+        },
+        {
+          "id": "3.4",
+          "topic_cn": "创意用光",
+          "topic_en": "Creative Color",
+          "count": 14
+        }
+      ]
+    },
+    {
+      "id": "optics",
+      "name_en": "Optics",
+      "name_cn": "光学",
+      "definition_cn": "影响透视、焦点和光学瑕疵的相机镜头技术特性。",
+      "description_en": "The technical characteristics of camera lenses affecting perspective, focus, and optical artifacts.",
+      "count": 72,
+      "batches": [
+        {
+          "id": "4.1",
+          "topic_cn": "焦段",
+          "topic_en": "Focal Length",
+          "count": 12
+        },
+        {
+          "id": "4.2",
+          "topic_cn": "景深",
+          "topic_en": "Depth of Field",
+          "count": 13
+        },
+        {
+          "id": "4.3",
+          "topic_cn": "光学瑕疵",
+          "topic_en": "Artifacts",
+          "count": 20
+        },
+        {
+          "id": "4.4",
+          "topic_cn": "拍摄格式",
+          "topic_en": "Capture Formats",
+          "count": 27
+        }
+      ]
+    },
+    {
+      "id": "texture",
+      "name_en": "Texture",
+      "name_cn": "材质",
+      "definition_cn": "表面的视觉和触觉特质，包括颗粒感、材料属性和表面处理。",
+      "description_en": "The visual and tactile qualities of surfaces, including grain, material properties, and finish.",
+      "count": 57,
+      "batches": [
+        {
+          "id": "5.1",
+          "topic_cn": "胶片",
+          "topic_en": "Film Stock",
+          "count": 10
+        },
+        {
+          "id": "5.2",
+          "topic_cn": "颗粒",
+          "topic_en": "Grain & Noise",
+          "count": 15
+        },
+        {
+          "id": "5.3",
+          "topic_cn": "表面物理",
+          "topic_en": "Surface Physics",
+          "count": 13
+        },
+        {
+          "id": "5.4",
+          "topic_cn": "材质类型",
+          "topic_en": "Material Types",
+          "count": 19
+        }
+      ]
+    },
+    {
+      "id": "motion",
+      "name_en": "Motion",
+      "name_cn": "运镜",
+      "definition_cn": "相机或主体随时间的运动，包括运镜方式和时间操控效果。",
+      "description_en": "The movement of the camera or subjects over time, including camera moves and temporal effects.",
+      "count": 97,
+      "batches": [
+        {
+          "id": "6.1",
+          "topic_cn": "基础运动",
+          "topic_en": "Basic Moves",
+          "count": 12
+        },
+        {
+          "id": "6.2",
+          "topic_cn": "高级运动",
+          "topic_en": "Advanced Moves",
+          "count": 12
+        },
+        {
+          "id": "6.3",
+          "topic_cn": "时间操控",
+          "topic_en": "Temporal Manipulation",
+          "count": 16
+        },
+        {
+          "id": "6.4",
+          "topic_cn": "转场",
+          "topic_en": "Transitions",
+          "count": 21
+        },
+        {
+          "id": "6.5",
+          "topic_cn": "动作与事件",
+          "topic_en": "Actions & Events",
+          "count": 22
+        },
+        {
+          "id": "6.6",
+          "topic_cn": "运镜稳定性",
+          "topic_en": "Camera Stability",
+          "count": 14
+        }
+      ]
+    },
+    {
+      "id": "style",
+      "name_en": "Style",
+      "name_cn": "风格",
+      "definition_cn": "由艺术媒介、流派惯例和渲染技术决定的整体美学风格。",
+      "description_en": "The overall aesthetic approach determined by artistic medium, genre conventions, and rendering techniques.",
+      "count": 41,
+      "batches": [
+        {
+          "id": "7.1",
+          "topic_cn": "媒介",
+          "topic_en": "Medium",
+          "count": 9
+        },
+        {
+          "id": "7.2",
+          "topic_cn": "流派",
+          "topic_en": "Genre",
+          "count": 13
+        },
+        {
+          "id": "7.3",
+          "topic_cn": "技术",
+          "topic_en": "Technique",
+          "count": 19
+        }
+      ]
+    }
+  ]
+}

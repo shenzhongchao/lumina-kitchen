@@ -1,0 +1,7 @@
+node_modules/
+.env
+.env.*
+*.tgz
+output/
+.resources-staging/
+*.log
