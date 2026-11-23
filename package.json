@@ -2,10 +2,13 @@
   "name": "@local/lumina-kitchen",
   "version": "3.2.1",
   "private": true,
-  "repository": { "type": "git", "url": "https://github.com/shenzhongchao/lumina-kitchen.git" },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shenzhongchao/lumina-kitchen.git"
+  },
   "homepage": "https://github.com/shenzhongchao/lumina-kitchen",
   "type": "module",
-  "description": "LUMINA 创作台：从摄影图谱填写想法、推荐并调整配料，在创作详情中生成图片或视频，保留每一版作品与设置，支持对照和继续创作。",
+  "description": "浏览摄影图谱与运镜演示，把画面想法变成图片或视频。",
   "main": "src/host.js",
   "exports": {
     ".": "./src/host.js",
