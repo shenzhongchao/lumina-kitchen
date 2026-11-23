@@ -37,3 +37,5 @@ npm pack
 ```
 
 `npm pack` 会重建客户端并验证资源快照。详见 [INSTALL.md](INSTALL.md)。源码中的 `resources/data/motion-manifest.json` 固定远程资源的文件名、大小和 SHA-256。GIF 本体只作为 Releases 附件分发，不进入 Git 历史。
+
+发布验收范围与限制见 [VALIDATION.md](VALIDATION.md)。
