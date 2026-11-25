@@ -358,7 +358,7 @@ function CreationWorkspace({ board, busy, model, mediaInfo, jobs, onDesign, onRe
   return h('section', { className: 'lp-detail', 'aria-label': '创作详情', 'data-has-results': Boolean(hasResults) },
     h('header', { className: 'lp-detail-head' },
       h('div', { className: 'lp-head-main' },
-        h('span', { className: 'lk-kicker' }, 'LUMINA · 创作详情'),
+        h('span', { className: 'lk-kicker' }, '光影厨房 · 创作详情'),
         h('h2', null, board.title || '创作详情'),
         board.title !== board.idea ? h('p', { className: 'lp-idea' }, board.idea) : null),
       h('div', { className: 'lp-head-actions' },

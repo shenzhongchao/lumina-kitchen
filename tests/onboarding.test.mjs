@@ -69,7 +69,7 @@ test('sample rejects all text/image/video entrypoints before any model or transp
   for (const fn of [() => recommend({}, board, new Map(), trap), () => compare({}, board, new Map(), trap), () => proposeLocalEdit({}, board, 'framing', '靠近', trap)]) {
     await assert.rejects(fn(), e => e.code === 'GENERATION_DISABLED')
   }
-  const media = new MediaService({ root, store, config: { openaiKey: 'fake', apiyiKey: 'fake' }, fetchImpl: trap })
+  const media = new MediaService({ root, store, config: { openaiKey: 'fake', minimaxApiKey: 'fake' }, fetchImpl: trap })
   for (const kind of ['image', 'video']) await assert.rejects(media.start({ kind, id: board.id, expectedRevision: 0, planId: board.lab.comparison.id, variantId: 'A' }), e => e.code === 'GENERATION_DISABLED')
   assert.equal(calls, 0)
   assert.equal(media.jobs.size, 0)

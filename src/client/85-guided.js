@@ -71,9 +71,8 @@ function MediaPanel({ board, plan, variant, info, jobs, busy, stale, onGenerate,
   const duration = targetVideoDuration(board)
   const incompatibleDuration = Boolean(info?.video && !videoDurationSupported(duration, videoInfo))
   const resolution = videoInfo.resolution || '768P'
-  const officialVideo = videoRun?.service?.protocol === 'minimax-video'
-  const taskPrefix = videoRun?.service?.protocol === 'ark-seedance' ? 'cgt-' : 'task_'
-  const taskFormat = officialVideo ? '纯数字任务编号' : `${taskPrefix} 开头的任务编号`
+  const seedanceVideo = videoRun?.service?.protocol === 'ark-seedance'
+  const taskFormat = seedanceVideo ? 'cgt- 开头的任务编号' : '纯数字任务编号'
   const imageSizeLabel = imageInfo.protocol === 'ark-seedream' || imageInfo.protocol === 'minimax-image'
     ? `${imageInfo.size} · ${board.constraints?.aspect || '1:1'}`
     : imageInfo.size || '按画幅自动'

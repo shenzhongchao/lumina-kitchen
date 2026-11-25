@@ -8,11 +8,11 @@ import { MediaService, mediaConfig } from '../src/media/service.js'
 import { KitchenStore } from '../src/store.js'
 import { resultBoard } from './fixtures/results.mjs'
 
-for (const key of Object.keys(process.env)) if (/^(LUMINA_(OPENAI|APIYI|IMAGE)_|OPENAI_|APIYI_API_KEY)/.test(key)) delete process.env[key]
+for (const key of Object.keys(process.env)) if (/^(LUMINA_(OPENAI|IMAGE)_|OPENAI_)/.test(key)) delete process.env[key]
 delete process.env.ARK_API_KEY
 delete process.env.MINIMAX_API_KEY
 const image = (name = '图片一') => ({ name, apiKey: 'test-image-secret', baseUrl: 'https://image.example/v1', model: 'image-test', quality: 'high', size: '', complexity: '' })
-const video = (name = '视频一') => ({ name, apiKey: 'test-video-secret', baseUrl: 'https://video.example/hailuo/v2' })
+const video = (name = '视频一') => ({ name, apiKey: 'test-video-secret', baseUrl: 'https://video.example/v2' })
 async function fixture(t) {
   const root = await mkdtemp(join(tmpdir(), 'lumina-services-test-'))
   t.after(() => rm(root, { recursive: true, force: true }))
@@ -95,6 +95,7 @@ test('Ark and MiniMax official profiles use host keys after restart and keep the
     ['ark-seedream', 'ARK_API_KEY', 'ark-test-secret'],
     ['ark-seedance', 'ARK_API_KEY', 'ark-test-secret'],
     ['minimax-image', 'MINIMAX_API_KEY', 'minimax-test-secret'],
+    ['minimax-video', 'MINIMAX_API_KEY', 'minimax-test-secret'],
   ]) {
     const { kind, name, baseUrl, model } = settings.view().presets[protocol]
     const saved = await update(settings, { action: 'save', kind, profile: { protocol, name, baseUrl, model } })
@@ -195,7 +196,7 @@ test('image calls use saved defaults and video polling retains original endpoint
   const fetchImpl = async (url, init) => {
     seen.push({ url, key: init?.headers?.authorization, body: init?.body })
     if (url.endsWith('/images/generations')) return new Response(JSON.stringify({ data: [{ b64_json: 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Y9ZQmcAAAAASUVORK5CYII=' }] }))
-    if (url.endsWith('/video_generation')) return new Response(JSON.stringify({ task_id: 'task_pinned' }))
+    if (url.endsWith('/video_generation')) return new Response(JSON.stringify({ task_id: '424010985700099' }))
     return new Response(JSON.stringify({ task: { status: 'running' } }))
   }
   let service = new MediaService({ root, store, config: {}, fetchImpl }); await service.ready
@@ -223,7 +224,7 @@ test('image calls use saved defaults and video polling retains original endpoint
   await service.writing
   service = new MediaService({ root, store, config: {}, fetchImpl }); await service.ready
   await service.refresh(videoJob.job.id, { force: true })
-  assert.equal(seen.at(-1).url, 'https://video.example/hailuo/v2/query/video_generation/task_pinned')
+  assert.equal(seen.at(-1).url, 'https://video.example/v2/query/video_generation/424010985700099')
   assert.equal(seen.at(-1).key, 'Bearer test-video-secret')
   assert.doesNotMatch(JSON.stringify(service.publicJob(videoJob.job.id)), /credentialRef|test-video-secret|connection/)
   assert.doesNotMatch(await readFile(join(root, 'media-jobs.json'), 'utf8'), /test-video-secret|test-image-secret/)

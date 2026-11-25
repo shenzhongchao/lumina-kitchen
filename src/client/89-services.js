@@ -70,7 +70,6 @@ const SERVICE_KEY_LINKS = new Map([
   ['api.openai.com', { name: 'OpenAI', url: 'https://platform.openai.com/api-keys' }],
   ['ark.cn-beijing.volces.com', { name: '火山方舟', url: 'https://ark.volcengine.com/region:cn-beijing/apikey' }],
   ['api.minimax.cn', { name: 'MiniMax', url: 'https://platform.minimax.cn/console/keys' }],
-  ['api.apiyi.com', { name: 'API易', url: 'https://api.apiyi.com/token' }],
 ])
 
 function serviceKeyLink(baseUrl) {
@@ -168,7 +167,7 @@ function ServiceSettings({ onMedia, onDirty, onBack, embedded = false, initialKi
   const defaultProfile = profiles.find(p => p.id === effective?.id)
   const protocols = Object.entries(settings?.presets || {}).filter(([, preset]) => preset.kind === kind)
   const openaiImage = draft?.protocol === 'openai-image'
-  const fixedModel = ['minimax-video', 'apiyi-h3'].includes(draft?.protocol)
+  const fixedModel = draft?.protocol === 'minimax-video'
   const keyLink = serviceKeyLink(draft?.baseUrl)
   const preset = settings?.presets[draft?.protocol]
   const savedDraft = profiles.find(profile => profile.id === draft?.id)
@@ -184,7 +183,6 @@ function ServiceSettings({ onMedia, onDirty, onBack, embedded = false, initialKi
     'ark-seedream': '使用火山方舟密钥，输出 2K 单张图片，尺寸随画幅调整。',
     'minimax-image': '使用 MiniMax 开放平台密钥，输出 2K 单张图片，尺寸随画幅调整。',
     'minimax-video': '使用 MiniMax 开放平台密钥，生成 768P 文生视频，支持 4–15 秒。',
-    'apiyi-h3': '使用 API易密钥，生成 768P 文生视频，支持 4–15 秒。',
     'ark-seedance': '使用火山方舟密钥，生成 720p 文生视频，支持 4–30 秒。',
   }
   const override = key => isDefault && effective.overrides?.[key]

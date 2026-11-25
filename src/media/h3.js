@@ -1,16 +1,14 @@
-// MiniMax-H3 v2 video adapter for MiniMax and API易. Only text-to-video is exposed.
+// Official MiniMax-H3 v2 video adapter. Only text-to-video is exposed.
 import { mediaError, isAbort } from './errors.js'
 
-export const H3_BASE = 'https://api.apiyi.com/hailuo/v2'
 export const MINIMAX_H3_BASE = 'https://api.minimax.cn/v2'
 export const H3_MODEL = 'MiniMax-H3'
 export const H3_RESOLUTION = '768P'
 export const H3_RATIOS = ['16:9', '9:16', '21:9', '4:3', '1:1', '3:4']
 export const H3_MAX_PROMPT = 7000
-export const H3_COST_PER_SECOND_USD = 0.03
 
-export function isH3TaskId(value, official = false) {
-  return typeof value === 'string' && (official ? /^\d{1,32}$/ : /^task_[\w-]{1,180}$/).test(value)
+export function isH3TaskId(value) {
+  return typeof value === 'string' && /^\d{1,32}$/.test(value)
 }
 
 export function h3Ratio(aspect) {
@@ -33,12 +31,6 @@ export function truncateH3(text, max = H3_MAX_PROMPT - 100) {
   return `${(boundary > max * 0.6 ? cut.slice(0, boundary + 1) : cut).trim()} …`
 }
 
-export function h3Cost(job, usage) {
-  const seconds = Number(usage?.output_seconds)
-  const used = Number.isFinite(seconds) && seconds >= 0 ? seconds : Number(job?.request?.duration)
-  return Number.isFinite(used) && used >= 0 ? Math.round(used * H3_COST_PER_SECOND_USD * 1e6) / 1e6 : null
-}
-
 function assertBaseUrl(value, provider) {
   let url
   try { url = new URL(value) } catch { throw mediaError(`${provider}服务地址无效`, 500, 'H3_BASE_URL') }
@@ -49,20 +41,9 @@ function assertBaseUrl(value, provider) {
   return url.href.replace(/\/+$/, '')
 }
 
-function providerMessage(status) {
-  return {
-    400: 'API易拒绝了视频参数，请检查提示词、时长与画幅。',
-    401: 'API易密钥无效，请检查 LUMINA_APIYI_API_KEY。',
-    403: 'API易拒绝访问，请检查余额与令牌分组。',
-    429: 'API易请求过于频繁，请稍后查询。',
-    503: '当前令牌分组没有可用的 H3 渠道，请检查 API易控制台。',
-  }[status] || `API易暂时不可用（HTTP ${status}）。`
-}
-
 export class H3Client {
-  constructor({ apiKey, official = false, baseUrl = official ? MINIMAX_H3_BASE : H3_BASE, fetchImpl = fetch }) {
-    this.official = official
-    this.provider = official ? 'MiniMax' : 'API易'
+  constructor({ apiKey, baseUrl = MINIMAX_H3_BASE, fetchImpl = fetch }) {
+    this.provider = 'MiniMax'
     if (!apiKey) throw mediaError(`未配置 ${this.provider} 视频密钥`, 503, 'NO_VIDEO_KEY')
     this.apiKey = apiKey
     this.base = assertBaseUrl(baseUrl, this.provider)
@@ -93,9 +74,7 @@ export class H3Client {
       })
     }
     if (!response.ok) {
-      const message = this.official
-        ? `MiniMax 视频请求失败（HTTP ${response.status}），请核对密钥、模型权限和账户额度。`
-        : providerMessage(response.status)
+      const message = `MiniMax 视频请求失败（HTTP ${response.status}），请核对密钥、模型权限和账户额度。`
       const error = mediaError(message, response.status === 429 ? 429 : 502, 'H3_PROVIDER')
       error.rejected = response.status >= 400 && response.status < 500
       throw error
@@ -112,14 +91,14 @@ export class H3Client {
       content: [{ type: 'text', text: truncateH3(prompt) }],
     }
     const result = await this.#json('/video_generation', request, 60_000)
-    if (!isH3TaskId(result?.task_id, this.official)) {
+    if (!isH3TaskId(result?.task_id)) {
       throw mediaError(`未收到有效的 ${this.provider} 任务编号，请先核对任务记录，勿重复生成`, 502, 'H3_TASK', { uncertain: true })
     }
     return { taskId: result.task_id, request }
   }
 
   async query(taskId) {
-    if (!isH3TaskId(taskId, this.official)) throw mediaError('任务编号无效', 400, 'H3_TASK_ID')
+    if (!isH3TaskId(taskId)) throw mediaError('任务编号无效', 400, 'H3_TASK_ID')
     const result = await this.#json(`/query/video_generation/${encodeURIComponent(taskId)}`, null, 30_000)
     const task = result?.task
     if (!task || !['queued', 'running', 'succeeded', 'failed', 'cancelled'].includes(task.status)) {
@@ -132,11 +111,11 @@ export class H3Client {
 /** Only provider-returned HTTPS URLs are fetched; redirects and local hosts are rejected. */
 export function assertVideoUrl(value) {
   let url
-  try { url = new URL(value) } catch { throw mediaError('API易返回了无效的视频地址', 502, 'H3_VIDEO_URL') }
-  if (url.protocol !== 'https:' || url.username || url.password) throw mediaError('API易视频地址不安全', 502, 'H3_VIDEO_URL')
+  try { url = new URL(value) } catch { throw mediaError('服务商返回了无效的视频地址', 502, 'H3_VIDEO_URL') }
+  if (url.protocol !== 'https:' || url.username || url.password) throw mediaError('视频地址不安全', 502, 'H3_VIDEO_URL')
   const host = url.hostname.toLowerCase()
   if (/^(localhost|127\.|0\.|10\.|192\.168\.|169\.254\.|172\.(1[6-9]|2\d|3[01])\.|\[)/.test(host) || !host.includes('.')) {
-    throw mediaError('API易视频地址指向本机或内网', 502, 'H3_VIDEO_URL')
+    throw mediaError('视频地址指向本机或内网', 502, 'H3_VIDEO_URL')
   }
   return url.href
 }

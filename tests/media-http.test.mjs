@@ -9,7 +9,7 @@ import plugin from '../src/host.js'
 import { KitchenStore } from '../src/store.js'
 import { planKey } from '../src/lab-input.js'
 
-for (const key of ['LUMINA_OPENAI_API_KEY', 'OPENAI_API_KEY', 'LUMINA_APIYI_API_KEY', 'APIYI_API_KEY', 'MINIMAX_API_KEY']) delete process.env[key]
+for (const key of ['LUMINA_OPENAI_API_KEY', 'OPENAI_API_KEY', 'MINIMAX_API_KEY']) delete process.env[key]
 const PNG = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Y9ZQmcAAAAASUVORK5CYII='
 
 function boardFixture() {

@@ -5,3 +5,10 @@ node_modules/
 output/
 .resources-staging/
 *.log
+
+# Internal notes, agent instructions, and legacy verification archives
+AGENTS.md
+docs/agents/
+docs/ai-video-positioning-*.md
+docs/README-history-*.md
+VALIDATION.md

@@ -14,7 +14,7 @@
 
 本仓库的资源快照与客户端可直接用于安装；`npm pack` 自动重建客户端并核对资源哈希，不需要父仓库。想更新知识数据时运行 `node scripts/bundle-data.mjs <包含data及assets的web目录>`。更新前检查来源与分发权限，更新后提交快照及 manifest，运行测试。
 
-本插件通过固定 Git 提交申请市场收录，暂不发布 npm。
+市场条目指向 GitHub Release 中固定版本的安装包。维护者更新版本时请参阅[发布流程](https://github.com/shenzhongchao/lumina-kitchen/blob/main/docs/release.md)。
 
 ## 动态素材发布
 

@@ -641,7 +641,7 @@ function KitchenPage() {
     return h('div', { className: 'lk-root ll-panel' }, h('style', null, CSS + WORKBENCH_CSS + GUIDED_CSS + RESULTS_CSS + ONBOARDING_CSS + DARK_CSS + CREATION_CSS),
       h('div', { className: 'll-boot' },
         h(BrandMark, { size: 38 }),
-        h('span', { className: 'll-boot-word' }, 'LUMINA'),
+        h('span', { className: 'll-boot-word' }, '光影厨房'),
         h('span', { className: 'll-boot-note', role: 'status' }, t('loading'))))
   }
 
@@ -756,7 +756,7 @@ const kitchenPlugin = {
       name: 'sidebar.panellist',
       id: 'lumina-kitchen',
       order: 6,
-      label: () => 'LUMINA',
+      label: () => t('sidebar.title'),
     }, KitchenIcon))
     ctx.slots.inject('main', () => ctx.slots.register({
       name: 'main',

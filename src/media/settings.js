@@ -4,11 +4,11 @@ import { randomUUID } from 'node:crypto'
 import { mediaError } from './errors.js'
 import { IMAGE_SIZES, IMAGE_QUALITIES, IMAGE_COMPLEXITIES } from './openai-image.js'
 import { H3_MODEL } from './h3.js'
-import { legacyProtocol, mediaPreset, MEDIA_PRESETS } from './providers.js'
+import { defaultProtocol, legacyProtocol, mediaPreset, MEDIA_PRESETS } from './providers.js'
 
 const ENV = {
   image: { baseUrl: ['LUMINA_OPENAI_BASE_URL', 'OPENAI_BASE_URL'], model: ['LUMINA_IMAGE_MODEL'], size: ['LUMINA_IMAGE_SIZE'], quality: ['LUMINA_IMAGE_QUALITY'], complexity: ['LUMINA_IMAGE_COMPLEXITY'] },
-  video: { baseUrl: ['LUMINA_APIYI_BASE_URL'] },
+  video: {},
 }
 const trimmed = value => typeof value === 'string' ? value.trim() : ''
 const invalid = message => { throw mediaError(message, 400, 'SERVICE_CONFIG') }
@@ -47,7 +47,7 @@ export class MediaSettings {
       const ids = new Set()
       for (const p of state.profiles) {
         if (!p || !['image', 'video'].includes(p.kind) || typeof p.id !== 'string' || ids.has(p.id) || !trimmed(p.name) || !trimmed(p.model)) throw new Error('invalid profile')
-        const legacyRef = p.protocol === legacyProtocol(p.kind) && p.credentialRef === `legacy:${p.kind}`
+        const legacyRef = (p.protocol === legacyProtocol(p.kind) || p.protocol === 'minimax-video') && p.credentialRef === `legacy:${p.kind}`
         if (p.credentialRef != null && !legacyRef && (!Object.hasOwn(state.credentials, p.credentialRef) || !trimmed(state.credentials[p.credentialRef]))) throw new Error('invalid credential reference')
         if (mediaPreset(p.protocol)?.kind !== p.kind) throw new Error('invalid protocol')
         const baseUrl = profileBaseUrl(p.baseUrl, p.protocol)
@@ -77,14 +77,13 @@ export class MediaSettings {
     if (kind === 'image') {
       return { id: null, name: '原有图片配置', kind, protocol: 'openai-image', baseUrl: c.openaiBaseUrl, model: c.imageModel, size: c.imageSize || '', quality: c.imageQuality, complexity: c.imageComplexity || '', credentialRef: 'legacy:image' }
     }
-    return { id: null, name: '原有视频配置', kind, protocol: 'apiyi-h3', baseUrl: c.apiyiBaseUrl, model: H3_MODEL, credentialRef: 'legacy:video' }
+    return { id: null, name: '原有视频配置', kind, protocol: 'minimax-video', baseUrl: MEDIA_PRESETS['minimax-video'].baseUrl, model: H3_MODEL, credentialRef: 'legacy:video' }
   }
   #migrateDefaults(draft) {
     for (const kind of ['image', 'video']) {
       if (draft.defaults[kind]) continue
-      const officialVideo = kind === 'video' && trimmed(process.env.MINIMAX_API_KEY)
-      const connection = officialVideo
-        ? { kind, protocol: 'minimax-video', baseUrl: MEDIA_PRESETS['minimax-video'].baseUrl, model: H3_MODEL }
+      const connection = kind === 'video'
+        ? { kind, protocol: 'minimax-video', baseUrl: MEDIA_PRESETS['minimax-video'].baseUrl, model: H3_MODEL, ...(this.legacy.minimaxKey ? { credentialRef: 'legacy:video' } : {}) }
         : this.#legacyConnection(kind)
       const preset = MEDIA_PRESETS[connection.protocol]
       if (!this.key(connection) && !preset.keyEnv.some(name => trimmed(process.env[name]))) continue
@@ -124,7 +123,7 @@ export class MediaSettings {
     const ref = connection?.credentialRef || ''
     if (ref.startsWith('env:')) return trimmed(process.env[ref.slice(4)])
     if (ref === 'legacy:image') return this.legacy.openaiKey
-    if (ref === 'legacy:video') return this.legacy.apiyiKey
+    if (ref === 'legacy:video') return this.legacy.minimaxKey
     return this.state.credentials[ref] || ''
   }
   publicConnection(connection) {
@@ -180,7 +179,7 @@ export class MediaSettings {
         const input = body.profile || {}
         const previous = input.id ? draft.profiles.find(p => p.id === input.id && p.kind === kind) : null
         if (input.id && !previous) invalid('找不到这个服务配置')
-        const protocol = input.protocol ?? previous?.protocol ?? legacyProtocol(kind)
+        const protocol = input.protocol ?? previous?.protocol ?? defaultProtocol(kind)
         const preset = mediaPreset(protocol)
         if (preset?.kind !== kind) invalid('请选择适用于当前生成类型的服务')
         if (previous && previous.protocol !== protocol) invalid('更换服务类型时请添加一组新配置')
@@ -196,7 +195,7 @@ export class MediaSettings {
           id: previous?.id || randomUUID(), kind, name,
           protocol,
           baseUrl: profileBaseUrl(trimmed(input.baseUrl), protocol), credentialRef,
-          model: ['apiyi-h3', 'minimax-video'].includes(protocol) ? H3_MODEL : trimmed(input.model ?? preset.model),
+          model: protocol === 'minimax-video' ? H3_MODEL : trimmed(input.model ?? preset.model),
         }
         if (!profile.model || profile.model.length > 160 || /[\r\n]/.test(profile.model)) invalid('请填写有效的模型 ID')
         if (protocol === 'openai-image') {

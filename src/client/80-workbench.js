@@ -582,7 +582,7 @@ function Library({ motion, dims, concepts, board, dimId, topicId, query, density
   return h('section', { className: 'll-library', 'aria-label': '摄影知识图谱' },
     h('header', { className: 'll-lib-head' },
       h('div', { className: 'll-lib-mast' },
-        h('span', { className: 'lk-kicker' }, 'LUMINA ATLAS'),
+        h('span', { className: 'lk-kicker' }, '光影厨房 · 摄影图谱'),
         h('h2', { className: 'll-library-heading' }, '选一种画面效果')),
       h('dl', { className: 'll-lib-ledger', 'aria-label': '图谱规模' },
         [['维度', dims.length], ['主题', dims.reduce((n, d) => n + (d.topics?.length || 0), 0)], ['概念', concepts.length]].map(([label, count]) => h('div', { key: label },

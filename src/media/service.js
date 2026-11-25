@@ -7,7 +7,7 @@ import { randomUUID } from 'node:crypto'
 import { Readable } from 'node:stream'
 import { AssetStore } from './assets.js'
 import { generateImage, imageRequest, normalizeImageSize, DEFAULT_IMAGE_MODEL, MAX_IMAGE_BYTES, IMAGE_SIZES, IMAGE_QUALITIES, IMAGE_COMPLEXITIES } from './openai-image.js'
-import { H3Client, H3_RESOLUTION, H3_COST_PER_SECOND_USD, h3Ratio, h3Cost, truncateH3, assertVideoUrl, isH3TaskId } from './h3.js'
+import { H3Client, H3_RESOLUTION, h3Ratio, truncateH3, assertVideoUrl, isH3TaskId } from './h3.js'
 import { SeedanceClient, SEEDANCE_RESOLUTION, SEEDANCE_MAX_DURATION, isSeedanceTaskId } from './seedance.js'
 import { mediaError } from './errors.js'
 import { checkRevision } from '../shared-experiment.js'
@@ -21,8 +21,7 @@ const MAX_VIDEO_BYTES = 300 * 1024 * 1024
 const pick = (...values) => values.find(value => typeof value === 'string' && value.trim())?.trim() || ''
 const isSeedance = connection => connection?.protocol === 'ark-seedance'
 const videoDurationRange = connection => ({ minDuration: 4, maxDuration: isSeedance(connection) ? SEEDANCE_MAX_DURATION : 15 })
-const isPricedH3 = connection => connection.protocol === 'apiyi-h3' && connection.baseUrl.replace(/\/+$/, '') === 'https://api.apiyi.com/hailuo/v2'
-const providerIds = { 'openai-image': 'openai', 'apiyi-h3': 'apiyi', 'ark-seedream': 'ark', 'ark-seedance': 'ark', 'minimax-image': 'minimax', 'minimax-video': 'minimax' }
+const providerIds = { 'openai-image': 'openai', 'ark-seedream': 'ark', 'ark-seedance': 'ark', 'minimax-image': 'minimax', 'minimax-video': 'minimax' }
 
 export function mediaConfig(config = {}) {
   const nested = config.media && typeof config.media === 'object' ? config.media : {}
@@ -35,9 +34,7 @@ export function mediaConfig(config = {}) {
     imageSize: pick(process.env.LUMINA_IMAGE_SIZE, nested.imageSize, image.size, config.imageSize),
     imageQuality: pick(process.env.LUMINA_IMAGE_QUALITY, nested.imageQuality, image.quality, config.imageQuality) || 'medium',
     imageComplexity: pick(process.env.LUMINA_IMAGE_COMPLEXITY, nested.imageComplexity, image.complexity, config.imageComplexity),
-    apiyiKey: pick(process.env.LUMINA_APIYI_API_KEY, process.env.APIYI_API_KEY, nested.apiyiApiKey, video.apiKey, config.apiyiApiKey),
-    apiyiBaseUrl: pick(process.env.LUMINA_APIYI_BASE_URL, nested.apiyiBaseUrl, video.baseUrl, config.apiyiBaseUrl) || 'https://api.apiyi.com/hailuo/v2',
-    costPerSecondUsd: H3_COST_PER_SECOND_USD,
+    minimaxKey: pick(process.env.MINIMAX_API_KEY, nested.minimaxApiKey, video.apiKey, config.minimaxApiKey),
   }
 }
 
@@ -157,7 +154,7 @@ export class MediaService {
         ...this.settings.publicConnection(video),
         resolution: isSeedance(video) ? SEEDANCE_RESOLUTION : H3_RESOLUTION,
         ...videoDurationRange(video),
-        costPerSecondUsd: isPricedH3(video) ? this.config.costPerSecondUsd : null,
+        costPerSecondUsd: null,
       } : null,
     }
   }
@@ -369,7 +366,7 @@ export class MediaService {
   #videoClient(job) {
     const connection = job.connection || this.settings.resolve('video', true)
     const options = { apiKey: this.settings.key(connection), baseUrl: connection.baseUrl, model: connection.model, fetchImpl: this.fetchImpl }
-    return isSeedance(connection) ? new SeedanceClient(options) : new H3Client({ ...options, official: connection.protocol === 'minimax-video' })
+    return isSeedance(connection) ? new SeedanceClient(options) : new H3Client(options)
   }
 
   async #fail(job, error) {
@@ -436,7 +433,7 @@ export class MediaService {
         return job
       }
       job.remoteUrl = remoteUrl
-      job.costUsd = isPricedH3(job.connection || this.settings.resolve('video', true)) ? h3Cost(job, task.usage) : null
+      job.costUsd = null
       try {
         job.asset = await this.#downloadVideo(job, remoteUrl)
         delete job.downloadError
@@ -467,10 +464,9 @@ export class MediaService {
     if (job.taskId) throw mediaError('这个任务已经有关联的任务编号', 409, 'MEDIA_RECOVER')
     if (!['uncertain', 'submitting'].includes(job.status)) throw mediaError('这个任务不需要关联', 409, 'MEDIA_RECOVER')
     const seedance = isSeedance(job.connection)
-    const official = job.connection?.protocol === 'minimax-video'
-    const valid = seedance ? isSeedanceTaskId(taskId) : isH3TaskId(taskId, official)
+    const valid = seedance ? isSeedanceTaskId(taskId) : isH3TaskId(taskId)
     if (!valid) {
-      const format = official ? '纯数字任务编号' : `${seedance ? 'cgt-' : 'task_'} 开头的任务编号`
+      const format = seedance ? 'cgt- 开头的任务编号' : '纯数字任务编号'
       throw mediaError(`请输入服务商返回的${format}`, 400, 'VIDEO_TASK_ID')
     }
     if ([...this.jobs.values()].some(item => item.id !== id && item.taskId === taskId)) {

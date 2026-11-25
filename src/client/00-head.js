@@ -4,6 +4,7 @@ const BASE = '/lumina-kitchen'
 
 const LANGS = {
   zh: {
+    'sidebar.title': '光影厨房',
     'pane.tree': '目录',
     'pane.atlas': '图谱',
     'atlas.label': 'KNOWLEDGE ATLAS',
@@ -91,6 +92,7 @@ const LANGS = {
     'loading': '正在读取图谱…',
   },
   en: {
+    'sidebar.title': 'Shot Lab',
     'pane.tree': 'Contents',
     'pane.atlas': 'Atlas',
     'atlas.label': 'KNOWLEDGE ATLAS',

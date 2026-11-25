@@ -11,7 +11,7 @@ import { h3Duration, h3Ratio, truncateH3 } from '../src/media/h3.js'
 import { applyEdit } from '../src/shared-experiment.js'
 
 // Keep the fixtures independent from a developer machine's real provider keys.
-for (const key of ['LUMINA_OPENAI_API_KEY', 'OPENAI_API_KEY', 'LUMINA_APIYI_API_KEY', 'APIYI_API_KEY', 'MINIMAX_API_KEY']) delete process.env[key]
+for (const key of ['LUMINA_OPENAI_API_KEY', 'OPENAI_API_KEY', 'MINIMAX_API_KEY']) delete process.env[key]
 
 const PNG = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Y9ZQmcAAAAASUVORK5CYII='
 const imageResponse = () => new Response(JSON.stringify({
@@ -68,7 +68,7 @@ async function fixture(t, fetchImpl) {
   const service = new MediaService({
     root,
     store,
-    config: { openaiApiKey: 'sk-test', apiyiApiKey: 'ak-test' },
+    config: { openaiApiKey: 'sk-test', minimaxApiKey: 'mk-test' },
     fetchImpl,
   })
   await service.ready
@@ -232,12 +232,12 @@ test('a synced prompt reaches the image request and never reuses a result genera
 test('synced video text and actual request agree on the latest duration and ratio', async t => {
   let request
   const {store,service}=await fixture(t,async (url,init)=>{
-    if(url.endsWith('/video_generation')){request=JSON.parse(init.body);return new Response(JSON.stringify({task_id:'task_sync'}))}
+    if(url.endsWith('/video_generation')){request=JSON.parse(init.body);return new Response(JSON.stringify({task_id:'424010985700001'}))}
     if(url.includes('/query/video_generation/'))return new Response(JSON.stringify({task:{status:'succeeded',content:{url:'https://cdn.example.com/sync.mp4'}}}))
     if(url==='https://cdn.example.com/sync.mp4')return new Response(Buffer.from('video'),{headers:{'content-type':'video/mp4'}})
     throw new Error('unexpected request')
   })
-  await selectPreset(service, 'apiyi-h3')
+  await selectPreset(service, 'minimax-video')
   await store.mutate(s=>{s.boards[0].lab.comparison.variants=s.boards[0].lab.comparison.variants.slice(0,1);return s})
   const state=await store.mutate(s=>{Object.assign(s.boards[0].constraints,{duration:8,aspect:'16:9'});return s})
   const board=state.boards[0]
@@ -265,7 +265,7 @@ test('a saved 30-second shot edited to 20 seconds stays intact when the video se
   const edited = await store.mutate(state => { state.boards[0].constraints.duration = 20; return state })
   const board = edited.boards[0]
   const args = { kind: 'video', id: board.id, expectedRevision: board.revision, planId: board.lab.comparison.id, variantId: 'A' }
-  await selectPreset(service, 'apiyi-h3')
+  await selectPreset(service, 'minimax-video')
   await assert.rejects(service.start(args), { code: 'VIDEO_DURATION_UNSUPPORTED' })
   assert.equal(requests.length, 0)
   assert.equal((await store.read()).boards[0].constraints.duration, 20)
@@ -319,7 +319,7 @@ test('image job saves local bytes, records a run, and never duplicates a success
   assert.equal(calls, 1)
 })
 
-test('video job submits once, polls to success, downloads bytes and records cost', async t => {
+test('video job submits once, polls to success and downloads local bytes', async t => {
   let submits = 0
   let queries = 0
   const fetchImpl = async (url, init) => {
@@ -331,9 +331,9 @@ test('video job submits once, polls to success, downloads bytes and records cost
       assert.equal(body.duration, 6)
       assert.equal(body.ratio, '9:16')
       assert.equal(body.content[0].type, 'text')
-      return new Response(JSON.stringify({ task_id: 'task_abc123' }), { status: 200, headers: { 'content-type': 'application/json' } })
+      return new Response(JSON.stringify({ task_id: '424010985700002' }), { status: 200, headers: { 'content-type': 'application/json' } })
     }
-    if (url.includes('/query/video_generation/task_abc123')) {
+    if (url.includes('/query/video_generation/424010985700002')) {
       queries++
       return new Response(JSON.stringify({
         task: queries === 1
@@ -347,23 +347,23 @@ test('video job submits once, polls to success, downloads bytes and records cost
     throw new Error(`unexpected url ${url}`)
   }
   const { root, store, service } = await fixture(t, fetchImpl)
-  await selectPreset(service, 'apiyi-h3')
+  await selectPreset(service, 'minimax-video')
   const started = await service.start({ kind: 'video', id: 'b1', expectedRevision: 0, planId: 'p1', variantId: 'A' })
   await until(() => service.job(started.job.id).status === 'queued')
-  assert.equal(service.job(started.job.id).taskId, 'task_abc123')
+  assert.equal(service.job(started.job.id).taskId, '424010985700002')
 
   let job = await service.refresh(started.job.id, { force: true })
   assert.equal(job.status, 'running')
   job = await service.refresh(started.job.id, { force: true })
   assert.equal(job.status, 'succeeded')
-  assert.equal(job.costUsd, 0.18)
+  assert.equal(job.costUsd, null)
   assert.equal(job.remoteUrl, 'https://cdn.example.com/clip.mp4')
   assert.equal(job.asset.mime, 'video/mp4')
   const bytes = await readFile(join(root, 'media', job.asset.file))
   assert.equal(bytes.toString(), 'fake-video-bytes')
   const state = await store.read()
   assert.equal(state.boards[0].lab.runs.at(-1).status, 'succeeded')
-  assert.equal(state.boards[0].lab.runs.at(-1).costUsd, 0.18)
+  assert.equal(state.boards[0].lab.runs.at(-1).costUsd, null)
 
   const again = await service.start({ kind: 'video', id: 'b1', planId: 'p1', variantId: 'A' })
   assert.equal(again.job.id, started.job.id)
@@ -375,9 +375,9 @@ test('network loss on video submit is uncertain until a task id is associated', 
   const fetchImpl = async (url) => {
     if (url.endsWith('/video_generation')) {
       if (mode === 'fail') throw new Error('socket closed')
-      return new Response(JSON.stringify({ task_id: 'task_recovered' }), { status: 200, headers: { 'content-type': 'application/json' } })
+      return new Response(JSON.stringify({ task_id: '424010985700003' }), { status: 200, headers: { 'content-type': 'application/json' } })
     }
-    if (url.includes('/query/video_generation/task_recovered')) {
+    if (url.includes('/query/video_generation/424010985700003')) {
       return new Response(JSON.stringify({
         task: { status: 'succeeded', content: { url: 'https://cdn.example.com/recovered.mp4' }, usage: { output_seconds: 4 } },
       }), { status: 200, headers: { 'content-type': 'application/json' } })
@@ -388,13 +388,13 @@ test('network loss on video submit is uncertain until a task id is associated', 
     throw new Error(`unexpected url ${url}`)
   }
   const { service } = await fixture(t, fetchImpl)
-  await selectPreset(service, 'apiyi-h3')
+  await selectPreset(service, 'minimax-video')
   const started = await service.start({ kind: 'video', id: 'b1', expectedRevision: 0, planId: 'p1', variantId: 'A' })
   await until(() => service.job(started.job.id).status === 'uncertain')
   mode = 'recover'
-  const job = await service.recover(started.job.id, 'task_recovered')
+  const job = await service.recover(started.job.id, '424010985700003')
   assert.equal(job.status, 'succeeded')
-  assert.equal(job.costUsd, 0.12)
+  assert.equal(job.costUsd, null)
 })
 
 test('configured MiniMax video uses the official API, numeric task IDs and the shared environment key', async t => {
@@ -416,7 +416,7 @@ test('configured MiniMax video uses the official API, numeric task IDs and the s
   assert.equal(video.protocol, 'minimax-video')
   assert.equal(video.keyEnvironment, 'MINIMAX_API_KEY')
   assert.equal(video.costPerSecondUsd, null)
-  assert.equal(service.settings.resolve('video', true).protocol, 'apiyi-h3')
+  assert.equal(service.settings.resolve('video', true).protocol, 'minimax-video')
   const { job } = await service.start({ kind: 'video', id: 'b1', planId: 'p1', variantId: 'A' })
   await until(async () => (await store.read()).boards[0].lab.runs[0]?.status === 'queued')
   assert.equal(job.taskId, taskId)

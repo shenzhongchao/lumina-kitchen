@@ -14,7 +14,7 @@ if (!modules) throw new Error('Provide an isolated node_modules path containing 
 process.env.LUMINA_OFFLINE = pipelineFixture ? '0' : '1'
 const root = fileURLToPath(new URL('../', import.meta.url))
 process.env.DSH_HOME = await mkdtemp(join(tmpdir(), 'lumina-interactive-'))
-for (const key of ['LUMINA_OPENAI_API_KEY', 'OPENAI_API_KEY', 'LUMINA_APIYI_API_KEY', 'APIYI_API_KEY', 'ARK_API_KEY', 'MINIMAX_API_KEY']) delete process.env[key]
+for (const key of ['LUMINA_OPENAI_API_KEY', 'OPENAI_API_KEY', 'ARK_API_KEY', 'MINIMAX_API_KEY']) delete process.env[key]
 if (process.argv.includes('--results-fixture')) {
   const { resultBoard } = await import('../tests/fixtures/results.mjs')
   const board = resultBoard()

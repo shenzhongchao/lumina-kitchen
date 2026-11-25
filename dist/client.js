@@ -647,6 +647,7 @@ const BASE = '/lumina-kitchen'
 
 const LANGS = {
   zh: {
+    'sidebar.title': '光影厨房',
     'pane.tree': '目录',
     'pane.atlas': '图谱',
     'atlas.label': 'KNOWLEDGE ATLAS',
@@ -734,6 +735,7 @@ const LANGS = {
     'loading': '正在读取图谱…',
   },
   en: {
+    'sidebar.title': 'Shot Lab',
     'pane.tree': 'Contents',
     'pane.atlas': 'Atlas',
     'atlas.label': 'KNOWLEDGE ATLAS',
@@ -2180,7 +2182,7 @@ function Library({ motion, dims, concepts, board, dimId, topicId, query, density
   return h('section', { className: 'll-library', 'aria-label': '摄影知识图谱' },
     h('header', { className: 'll-lib-head' },
       h('div', { className: 'll-lib-mast' },
-        h('span', { className: 'lk-kicker' }, 'LUMINA ATLAS'),
+        h('span', { className: 'lk-kicker' }, '光影厨房 · 摄影图谱'),
         h('h2', { className: 'll-library-heading' }, '选一种画面效果')),
       h('dl', { className: 'll-lib-ledger', 'aria-label': '图谱规模' },
         [['维度', dims.length], ['主题', dims.reduce((n, d) => n + (d.topics?.length || 0), 0)], ['概念', concepts.length]].map(([label, count]) => h('div', { key: label },
@@ -2556,9 +2558,8 @@ function MediaPanel({ board, plan, variant, info, jobs, busy, stale, onGenerate,
   const duration = targetVideoDuration(board)
   const incompatibleDuration = Boolean(info?.video && !videoDurationSupported(duration, videoInfo))
   const resolution = videoInfo.resolution || '768P'
-  const officialVideo = videoRun?.service?.protocol === 'minimax-video'
-  const taskPrefix = videoRun?.service?.protocol === 'ark-seedance' ? 'cgt-' : 'task_'
-  const taskFormat = officialVideo ? '纯数字任务编号' : `${taskPrefix} 开头的任务编号`
+  const seedanceVideo = videoRun?.service?.protocol === 'ark-seedance'
+  const taskFormat = seedanceVideo ? 'cgt- 开头的任务编号' : '纯数字任务编号'
   const imageSizeLabel = imageInfo.protocol === 'ark-seedream' || imageInfo.protocol === 'minimax-image'
     ? `${imageInfo.size} · ${board.constraints?.aspect || '1:1'}`
     : imageInfo.size || '按画幅自动'
@@ -3045,15 +3046,15 @@ const SHELL_CSS = `
   background:var(--paper);color:var(--ink);font-family:var(--sans);color-scheme:light}
 .lm-identity{display:flex;align-items:center;gap:14px;min-width:0}
 .lm-brand{display:flex;align-items:center;gap:9px;min-width:0}
-.lm-word{padding-left:.08em;font:400 12.5px/1 var(--serif);letter-spacing:.44em;color:var(--ink)}
-.lm-sub{font-size:12px;color:var(--muted);white-space:nowrap}
+.lm-word{padding-left:.04em;font:500 14px/1 var(--serif);letter-spacing:.18em;color:var(--ink)}
+.lm-sub{font:500 10.5px/1 var(--mono);letter-spacing:.22em;color:var(--muted);white-space:nowrap}
 .lumina-surface{flex:1;min-height:0;overflow:hidden}
-.lumina-surface>.lk-root{height:100%}@media(max-width:640px){.lm-word{font-size:11px;letter-spacing:.32em}}
+.lumina-surface>.lk-root{height:100%}@media(max-width:640px){.lm-word{font-size:12.5px;letter-spacing:.12em}}
 `
 function WorkspaceIdentity() {
   return h('div', { className: 'lm-identity' },
-    h('div', { className: 'lm-brand' }, h(BrandMark, { size: 20 }), h('span', { className: 'lm-word' }, 'LUMINA')),
-    h('span', { className: 'lm-sub' }, '创作台'))
+    h('div', { className: 'lm-brand' }, h(BrandMark, { size: 20 }), h('span', { className: 'lm-word' }, '光影厨房')),
+    h('span', { className: 'lm-sub' }, 'LUMINA'))
 }
 function LuminaPage() {
   return h('div', { className: 'lumina-shell' }, h('style', null, SHELL_CSS + DARK_CSS),
@@ -3421,7 +3422,7 @@ function CreationWorkspace({ board, busy, model, mediaInfo, jobs, onDesign, onRe
   return h('section', { className: 'lp-detail', 'aria-label': '创作详情', 'data-has-results': Boolean(hasResults) },
     h('header', { className: 'lp-detail-head' },
       h('div', { className: 'lp-head-main' },
-        h('span', { className: 'lk-kicker' }, 'LUMINA · 创作详情'),
+        h('span', { className: 'lk-kicker' }, '光影厨房 · 创作详情'),
         h('h2', null, board.title || '创作详情'),
         board.title !== board.idea ? h('p', { className: 'lp-idea' }, board.idea) : null),
       h('div', { className: 'lp-head-actions' },
@@ -3742,7 +3743,6 @@ const SERVICE_KEY_LINKS = new Map([
   ['api.openai.com', { name: 'OpenAI', url: 'https://platform.openai.com/api-keys' }],
   ['ark.cn-beijing.volces.com', { name: '火山方舟', url: 'https://ark.volcengine.com/region:cn-beijing/apikey' }],
   ['api.minimax.cn', { name: 'MiniMax', url: 'https://platform.minimax.cn/console/keys' }],
-  ['api.apiyi.com', { name: 'API易', url: 'https://api.apiyi.com/token' }],
 ])
 
 function serviceKeyLink(baseUrl) {
@@ -3840,7 +3840,7 @@ function ServiceSettings({ onMedia, onDirty, onBack, embedded = false, initialKi
   const defaultProfile = profiles.find(p => p.id === effective?.id)
   const protocols = Object.entries(settings?.presets || {}).filter(([, preset]) => preset.kind === kind)
   const openaiImage = draft?.protocol === 'openai-image'
-  const fixedModel = ['minimax-video', 'apiyi-h3'].includes(draft?.protocol)
+  const fixedModel = draft?.protocol === 'minimax-video'
   const keyLink = serviceKeyLink(draft?.baseUrl)
   const preset = settings?.presets[draft?.protocol]
   const savedDraft = profiles.find(profile => profile.id === draft?.id)
@@ -3856,7 +3856,6 @@ function ServiceSettings({ onMedia, onDirty, onBack, embedded = false, initialKi
     'ark-seedream': '使用火山方舟密钥，输出 2K 单张图片，尺寸随画幅调整。',
     'minimax-image': '使用 MiniMax 开放平台密钥，输出 2K 单张图片，尺寸随画幅调整。',
     'minimax-video': '使用 MiniMax 开放平台密钥，生成 768P 文生视频，支持 4–15 秒。',
-    'apiyi-h3': '使用 API易密钥，生成 768P 文生视频，支持 4–15 秒。',
     'ark-seedance': '使用火山方舟密钥，生成 720p 文生视频，支持 4–30 秒。',
   }
   const override = key => isDefault && effective.overrides?.[key]
@@ -4602,7 +4601,7 @@ function KitchenPage() {
     return h('div', { className: 'lk-root ll-panel' }, h('style', null, CSS + WORKBENCH_CSS + GUIDED_CSS + RESULTS_CSS + ONBOARDING_CSS + DARK_CSS + CREATION_CSS),
       h('div', { className: 'll-boot' },
         h(BrandMark, { size: 38 }),
-        h('span', { className: 'll-boot-word' }, 'LUMINA'),
+        h('span', { className: 'll-boot-word' }, '光影厨房'),
         h('span', { className: 'll-boot-note', role: 'status' }, t('loading'))))
   }
 
@@ -4717,7 +4716,7 @@ const kitchenPlugin = {
       name: 'sidebar.panellist',
       id: 'lumina-kitchen',
       order: 6,
-      label: () => 'LUMINA',
+      label: () => t('sidebar.title'),
     }, KitchenIcon))
     ctx.slots.inject('main', () => ctx.slots.register({
       name: 'main',
