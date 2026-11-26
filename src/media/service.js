@@ -1,4 +1,4 @@
-import { MediaSettings } from './settings.js'
+import { MediaSettings, isRetiredVideoProtocol } from './settings.js'
 import { assertGenerationAllowed } from '../generation-policy.js'
 // Media orchestration: durable jobs, explicit uncertainty, local assets.
 import { mkdir, readFile, rename, writeFile } from 'node:fs/promises'
@@ -123,6 +123,12 @@ export class MediaService {
       if (job.kind === 'video' && job.status === 'submitting') {
         job.status = 'uncertain'
         job.error = '服务重启，无法确认视频是否已提交；请先查看服务商任务记录。'
+        job.updatedAt = new Date().toISOString()
+        changed = true
+      }
+      if (job.kind === 'video' && ACTIVE.has(job.status) && isRetiredVideoProtocol(job.connection?.protocol)) {
+        job.status = 'uncertain'
+        job.error = '该历史视频服务已停用，请在原服务商控制台查看任务记录，并改用官方视频服务重新生成。'
         job.updatedAt = new Date().toISOString()
         changed = true
       }
@@ -365,6 +371,9 @@ export class MediaService {
 
   #videoClient(job) {
     const connection = job.connection || this.settings.resolve('video', true)
+    if (isRetiredVideoProtocol(connection?.protocol)) {
+      throw mediaError('该历史视频服务已停用，请在原服务商控制台查看任务记录，并改用官方视频服务重新生成。', 410, 'VIDEO_SERVICE_RETIRED')
+    }
     const options = { apiKey: this.settings.key(connection), baseUrl: connection.baseUrl, model: connection.model, fetchImpl: this.fetchImpl }
     return isSeedance(connection) ? new SeedanceClient(options) : new H3Client(options)
   }
@@ -463,6 +472,9 @@ export class MediaService {
     if (job.kind !== 'video') throw mediaError('只有视频任务可以关联任务编号', 400, 'MEDIA_RECOVER')
     if (job.taskId) throw mediaError('这个任务已经有关联的任务编号', 409, 'MEDIA_RECOVER')
     if (!['uncertain', 'submitting'].includes(job.status)) throw mediaError('这个任务不需要关联', 409, 'MEDIA_RECOVER')
+    if (isRetiredVideoProtocol(job.connection?.protocol)) {
+      throw mediaError('该历史视频服务已停用，请在原服务商控制台查看任务记录，并改用官方视频服务重新生成。', 410, 'VIDEO_SERVICE_RETIRED')
+    }
     const seedance = isSeedance(job.connection)
     const valid = seedance ? isSeedanceTaskId(taskId) : isH3TaskId(taskId)
     if (!valid) {

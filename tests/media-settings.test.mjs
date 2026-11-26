@@ -229,3 +229,99 @@ test('image calls use saved defaults and video polling retains original endpoint
   assert.doesNotMatch(JSON.stringify(service.publicJob(videoJob.job.id)), /credentialRef|test-video-secret|connection/)
   assert.doesNotMatch(await readFile(join(root, 'media-jobs.json'), 'utf8'), /test-video-secret|test-image-secret/)
 })
+
+test('upgrading from 3.2.2 retires legacy video profile without breaking image or official video defaults', async t => {
+  const { root } = await fixture(t)
+  const store = new KitchenStore(root)
+  const board = resultBoard(); board.lab.runs = []
+  await store.write({ activeId: board.id, boards: [board] })
+  await writeFile(join(root, 'media-services.json'), JSON.stringify({
+    version: 2,
+    revision: 5,
+    profiles: [
+      { id: 'img-1', kind: 'image', name: 'OpenAI 兼容', protocol: 'openai-image', baseUrl: 'https://image.example/v1', model: 'image-test', size: '', quality: 'medium', complexity: '', credentialRef: 'cred-img' },
+      { id: 'vid-official', kind: 'video', name: 'MiniMax H3 · 官方', protocol: 'minimax-video', baseUrl: 'https://api.minimax.cn/v2', model: 'MiniMax-H3', credentialRef: 'cred-mm' },
+      { id: 'vid-retired', kind: 'video', name: '旧视频配置', protocol: 'apiyi-h3', baseUrl: 'https://legacy.example/hailuo/v2', model: 'MiniMax-H3', credentialRef: 'cred-old' },
+    ],
+    defaults: { image: 'img-1', video: 'vid-official' },
+    credentials: { 'cred-img': 'img-secret', 'cred-mm': 'mm-secret', 'cred-old': 'old-secret' },
+  }))
+  const calls = []
+  const fetchImpl = async (url, init) => {
+    calls.push({ url, key: init?.headers?.authorization })
+    if (url.endsWith('/images/generations')) return new Response(JSON.stringify({ data: [{ b64_json: 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Y9ZQmcAAAAASUVORK5CYII=' }] }))
+    if (url.endsWith('/video_generation')) return new Response(JSON.stringify({ task_id: '424010985700888' }))
+    throw new Error(`unexpected ${url}`)
+  }
+  const service = new MediaService({ root, store, config: {}, fetchImpl })
+  await service.ready
+  assert.equal(service.initError, null)
+  const view = service.settings.view()
+  assert.deepEqual(view.profiles.map(p => p.id), ['img-1', 'vid-official'])
+  assert.deepEqual(view.defaults, { image: 'img-1', video: 'vid-official' })
+  assert.equal(view.effective.image.configured, true)
+  assert.equal(view.effective.video.configured, true)
+  assert.doesNotMatch(JSON.stringify(view), /vid-retired|old-secret|retiredProfiles/)
+
+  const persisted = JSON.parse(await readFile(join(root, 'media-services.json'), 'utf8'))
+  assert.equal(persisted.revision, 6)
+  assert.deepEqual(persisted.retiredProfiles.map(p => p.id), ['vid-retired'])
+  assert.equal(persisted.credentials['cred-old'], 'old-secret')
+
+  const imgJob = await service.start({ kind: 'image', id: 'b1', expectedRevision: 0, planId: 'p1', variantId: 'A' })
+  const vidJob = await service.start({ kind: 'video', id: 'b1', expectedRevision: 0, planId: 'p1', variantId: 'A' })
+  for (let n = 0; n < 100; n++) {
+    const runs = (await store.read()).boards[0].lab.runs || []
+    if (runs.find(r => r.jobId === imgJob.job.id)?.status === 'succeeded' && runs.find(r => r.jobId === vidJob.job.id)?.status === 'queued') break
+    await new Promise(r => setTimeout(r, 10))
+  }
+  await service.writing
+  assert.equal(service.job(imgJob.job.id).status, 'succeeded')
+  assert.equal(service.job(vidJob.job.id).status, 'queued')
+  assert.equal(calls.find(c => c.url.endsWith('/video_generation')).key, 'Bearer mm-secret')
+
+  // Second restart stays idempotent without bumping revision
+  const restarted = new MediaSettings(root, mediaConfig())
+  await restarted.ready
+  assert.equal(restarted.state.revision, 6)
+  assert.deepEqual(restarted.view().profiles.map(p => p.id), ['img-1', 'vid-official'])
+})
+
+test('upgrading from 3.2.2 when retired video profile was default clears only video default and preserves other profiles and jobs', async t => {
+  const { root } = await fixture(t)
+  const store = new KitchenStore(root)
+  const board = resultBoard(); board.lab.runs = []
+  await store.write({ activeId: board.id, boards: [board] })
+  await writeFile(join(root, 'media-services.json'), JSON.stringify({
+    version: 2,
+    revision: 3,
+    profiles: [
+      { id: 'img-1', kind: 'image', name: 'OpenAI 兼容', protocol: 'openai-image', baseUrl: 'https://image.example/v1', model: 'image-test', size: '', quality: 'medium', complexity: '', credentialRef: 'cred-img' },
+      { id: 'vid-retired', kind: 'video', name: '旧默认视频', protocol: 'apiyi-h3', baseUrl: 'https://legacy.example/hailuo/v2', model: 'MiniMax-H3', credentialRef: 'legacy:video' },
+      { id: 'vid-ark', kind: 'video', name: 'Seedance 2.5 · 火山方舟', protocol: 'ark-seedance', baseUrl: 'https://ark.cn-beijing.volces.com/api/v3', model: 'doubao-seedance-2-5-260628', credentialRef: 'cred-ark' },
+    ],
+    defaults: { image: 'img-1', video: 'vid-retired' },
+    credentials: { 'cred-img': 'img-secret', 'cred-ark': 'ark-secret' },
+  }))
+  await writeFile(join(root, 'media-jobs.json'), JSON.stringify({
+    version: 1,
+    jobs: [
+      { id: 'job-active', kind: 'video', boardId: 'b1', runId: 'run-active', status: 'queued', taskId: 'task_old', connection: { protocol: 'apiyi-h3', baseUrl: 'https://legacy.example/hailuo/v2', model: 'MiniMax-H3' }, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+      { id: 'job-unlinked', kind: 'video', boardId: 'b1', runId: 'run-unlinked', status: 'uncertain', taskId: null, connection: { protocol: 'apiyi-h3', baseUrl: 'https://legacy.example/hailuo/v2', model: 'MiniMax-H3' }, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+      { id: 'job-done', kind: 'video', boardId: 'b1', runId: 'run-done', status: 'succeeded', taskId: 'task_done', connection: { protocol: 'apiyi-h3', baseUrl: 'https://legacy.example/hailuo/v2', model: 'MiniMax-H3' }, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+    ],
+  }))
+  const service = new MediaService({ root, store, config: {}, fetchImpl: async () => { throw new Error('must not call') } })
+  await service.ready
+  assert.equal(service.initError, null)
+  const view = service.settings.view()
+  assert.deepEqual(view.profiles.map(p => p.id), ['img-1', 'vid-ark'])
+  assert.deepEqual(view.defaults, { image: 'img-1', video: null })
+  assert.equal(view.effective.image.configured, true)
+  assert.equal(view.effective.video, null)
+  await assert.rejects(service.start({ kind: 'video', id: 'b1', expectedRevision: 0, planId: 'p1', variantId: 'A' }), { code: 'NO_MEDIA_SERVICE' })
+  assert.equal(service.job('job-active').status, 'uncertain')
+  assert.match(service.job('job-active').error, /已停用/)
+  assert.equal(service.job('job-done').status, 'succeeded')
+  await assert.rejects(service.recover('job-unlinked', '424010985700001'), { code: 'VIDEO_SERVICE_RETIRED' })
+})

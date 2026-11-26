@@ -10,6 +10,8 @@ const ENV = {
   image: { baseUrl: ['LUMINA_OPENAI_BASE_URL', 'OPENAI_BASE_URL'], model: ['LUMINA_IMAGE_MODEL'], size: ['LUMINA_IMAGE_SIZE'], quality: ['LUMINA_IMAGE_QUALITY'], complexity: ['LUMINA_IMAGE_COMPLEXITY'] },
   video: {},
 }
+const RETIRED_VIDEO_PROTOCOLS = new Set(['apiyi-h3'])
+export const isRetiredVideoProtocol = protocol => RETIRED_VIDEO_PROTOCOLS.has(protocol)
 const trimmed = value => typeof value === 'string' ? value.trim() : ''
 const invalid = message => { throw mediaError(message, 400, 'SERVICE_CONFIG') }
 const presetKeyEnvironment = preset => preset.keyEnv.find(name => trimmed(process.env[name]))
@@ -45,8 +47,21 @@ export class MediaSettings {
       const state = JSON.parse(await readFile(this.file, 'utf8'))
       if (![1, 2].includes(state?.version) || !Number.isInteger(state.revision) || state.revision < 0 || !Array.isArray(state.profiles) || !state.defaults || !state.credentials || typeof state.credentials !== 'object' || Array.isArray(state.credentials)) throw new Error('invalid')
       const ids = new Set()
+      const activeProfiles = []
+      const retiredIds = new Set()
+      if (state.retiredProfiles !== undefined && !Array.isArray(state.retiredProfiles)) throw new Error('invalid retiredProfiles')
+      const retiredProfiles = Array.isArray(state.retiredProfiles) ? [...state.retiredProfiles] : []
       for (const p of state.profiles) {
         if (!p || !['image', 'video'].includes(p.kind) || typeof p.id !== 'string' || ids.has(p.id) || !trimmed(p.name) || !trimmed(p.model)) throw new Error('invalid profile')
+        ids.add(p.id)
+        if (p.kind === 'video' && isRetiredVideoProtocol(p.protocol)) {
+          retiredIds.add(p.id)
+          if (!retiredProfiles.some(item => item?.id === p.id)) {
+            retiredProfiles.push({ ...p, retiredAt: new Date().toISOString() })
+          }
+          normalized = true
+          continue
+        }
         const legacyRef = (p.protocol === legacyProtocol(p.kind) || p.protocol === 'minimax-video') && p.credentialRef === `legacy:${p.kind}`
         if (p.credentialRef != null && !legacyRef && (!Object.hasOwn(state.credentials, p.credentialRef) || !trimmed(state.credentials[p.credentialRef]))) throw new Error('invalid credential reference')
         if (mediaPreset(p.protocol)?.kind !== p.kind) throw new Error('invalid protocol')
@@ -55,7 +70,12 @@ export class MediaSettings {
           p.baseUrl = baseUrl
           normalized = true
         }
-        ids.add(p.id)
+        activeProfiles.push(p)
+      }
+      if (retiredIds.size) {
+        state.profiles = activeProfiles
+        state.retiredProfiles = retiredProfiles
+        if (retiredIds.has(state.defaults.video)) state.defaults.video = null
       }
       for (const kind of ['image', 'video']) if (state.defaults[kind] !== null && !state.profiles.some(p => p.id === state.defaults[kind] && p.kind === kind)) throw new Error('invalid default')
       this.state = state

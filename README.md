@@ -19,7 +19,7 @@
 ## 安装
 
 - **DSH 插件市场**：在插件市场搜索 `lumina-kitchen` 点击安装。
-- **CLI 从 GitHub 仓库直接安装**（默认安装 `main` 分支，也可将 `#main` 替换为具体版本标签如 `#v3.2.3`）：
+- **CLI 从 GitHub 仓库直接安装**（默认安装 `main` 分支，也可将 `#main` 替换为具体版本标签如 `#v3.2.4`）：
 
 ```bash
 dsh plugin --profile web add "github:shenzhongchao/lumina-kitchen#main"
@@ -28,7 +28,7 @@ dsh plugin --profile web add "github:shenzhongchao/lumina-kitchen#main"
 - **CLI 从 GitHub Release 安装固定版本压缩包**（预构建包，更多版本见 [Releases](https://github.com/shenzhongchao/lumina-kitchen/releases)）：
 
 ```bash
-dsh plugin --profile web add https://github.com/shenzhongchao/lumina-kitchen/releases/download/v3.2.3/local-lumina-kitchen-3.2.3.tgz
+dsh plugin --profile web add https://github.com/shenzhongchao/lumina-kitchen/releases/download/v3.2.4/local-lumina-kitchen-3.2.4.tgz
 ```
 
 > 也可在 DSH 网页端「插件 → 添加插件」中直接粘贴上述 `github:` 或 `.tgz` 地址。通过 CLI 安装后，重启或重载 DSH Web（`dsh web`）即可生效。
